@@ -1,0 +1,117 @@
+body {
+    margin: 0px;
+    background-image: url(img/pokemon.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+h3 {
+    margin-top: 4px;
+}
+
+/* Scrollbars */
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #c42906;
+}
+
+/* Navigation / Header */
+.header {
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 100px;
+    padding: 0px 16px 0px 16px;
+    background-color: rgb(227, 53, 13);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.144);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-img {
+    width: 200px;
+    object-fit: contain;
+}
+
+.search-input {
+    margin-right: -4px;
+    padding: 10px;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    border: 1px solid black;
+}
+
+.search-button {
+    padding: 10px;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.search-img {
+    width: 12px;
+}
+
+/* Main Content */
+.main-content {
+    left: 0px;
+    right: 0px;
+    margin: 64px 16px 64px 16px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Pokemon Card */
+.pokemon-card {
+    width: 225px;
+    height: 150px;
+    margin: 16px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid rgb(53, 48, 48);
+    border-radius: 24px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.144);
+    transform: scale(0.98);
+}
+
+.pokemon-card:hover {
+    box-shadow: 0px 4px 16px rgba(0,0,0,0.144);
+    transform: scale(1);
+    cursor: pointer;
+}
+
+.pokemon-card img {
+    width: 125px;
+    object-fit: contain;
+}
+
+.type-container {
+    width: 50px;
+    margin: 4px 0px 4px 0px;
+    padding: 4px;
+    border: 1px solid lightgrey;
+    border-radius: 8px;
+    text-align: center;
+    color: white;
+    background-color: green;
+}
