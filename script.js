@@ -1,6 +1,6 @@
 let responseAsJsonPokemon;
 let startLoad = 1;
-let endLoad = 50;
+let endLoad = 5;
 let loading = false;
 
 
@@ -33,6 +33,16 @@ function pokemonCardType(startLoad, responseAsJsonPokemon) {
     }
 }
 
+/* Popup Pokemon */
+function closePopup() {
+    document.getElementById("popup-content").classList.add(`dnone`);
+}
+
+function doNotClose(event) {
+    event.stopPropagation();
+}
+
+/* Templates */
 function pokemonCardTemplate(startLoad, responseAsJsonPokemon) {
     let pokemonId = responseAsJsonPokemon['id'];
     let pokemonName = responseAsJsonPokemon['name'];
@@ -40,7 +50,7 @@ function pokemonCardTemplate(startLoad, responseAsJsonPokemon) {
     let pokemonImg = responseAsJsonPokemon['sprites']['other']['official-artwork']['front_default'];
     
     return /*html*/`
-        <div class="pokemon-card" id="pokemon-card${startLoad}">
+        <div class="pokemon-card" id="pokemon-card${startLoad}" onclick="popupPokemon(${startLoad})">
             <div>
                 <span><b>#${pokemonId}</b></span>
                 <h3>${pokemonNameFormatted}</h3>
@@ -55,6 +65,33 @@ function pokemonCardTypeTemplate(nameAndColour) {
     let name = nameAndColour.charAt(0).toUpperCase() + nameAndColour.slice(1).toLowerCase();
     return /*html*/`
     <div class="type-container ${nameAndColour}" id="type-container">${name}</div>
+    `;
+}
+
+function pokemonPopupTemplate() {
+    return /*html*/`
+    <div class="popup-pokemon" id="popup-content" onclick="closePopup()">
+        <img class="close-img" src="img/cancel-256.jpg" alt="Close Popup">
+        <div class="pokemon-popup-card" onclick="doNotClose(event)">
+            <div class="popup-pokemon-top-container">
+                <div>
+                    <span><b># ID</b></span>
+                    <h3>NAME</h3>
+                    <div class="popup-pokemon-top-container-img">
+                        <img src="" alt="Pokemon Img">
+                    </div>
+                </div>
+            </div>
+            <div class="popup-pokemon-back-forward">
+                <span> Links </span>
+                <span> Rechts </span>
+            </div>
+            <span class="popup-pokemon-base-stats">Base Stats</span>
+            <div class="popup-pokemon-all-stats">
+                Alle STATS
+            </div>
+        </div>
+    </div>
     `;
 }
 

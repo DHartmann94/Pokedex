@@ -11,6 +11,10 @@ h3 {
     margin-top: 4px;
 }
 
+.dnone {
+    display: none !important;
+}
+
 /* Scrollbars */
 /* width */
 ::-webkit-scrollbar {
@@ -125,6 +129,90 @@ h3 {
     box-shadow: 0px 2px 8px rgba(0,0,0,0.144);
 }
 
+/* Pokemon Popup */
+.popup-pokemon {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+}
+
+.pokemon-popup-card {
+    width: 300px;
+    height: 450px;
+    margin: 16px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgb(53, 48, 48);
+    border-radius: 24px;
+}
+
+.popup-pokemon-top-container {
+    height: 40%;
+    background-color: aqua;
+    border-top-right-radius: 24px;
+    border-top-left-radius: 24px;
+    border-bottom: 1px solid black;
+}
+
+.popup-pokemon-top-container div {
+    padding: 8px;
+}
+
+.popup-pokemon-top-container-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-pokemon-back-forward {
+    height: 5%;
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(247, 246, 246);
+}
+
+.popup-pokemon-base-stats {
+    height: 5%;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(247, 246, 246);
+    border-bottom: 1px solid black;
+}
+
+.popup-pokemon-all-stats {
+    height: 50%;
+    padding: 8px;
+    background-color: rgb(247, 246, 246);
+    border-bottom-right-radius: 24px;
+    border-bottom-left-radius: 24px;
+}
+
+.close-img {
+    width: 50px;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    border: 1px solid transparent;
+    border-radius: 100%;
+    cursor: pointer;
+    transition: 225ms ease-in-out;
+    transform: scale(0.98);
+}
+
+.close-img:hover {
+    transition: 225ms ease-in-out;
+    transform: scale(1);
+}
+
 /* Loader */
 .loader {
     height: 50px;
@@ -161,14 +249,4 @@ h3 {
     50% {
         transform: scale(1);
     }
-}
-
-/* Fotter */
-.footer {
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    height: 100px;
-    padding: 0px 16px 0px 16px;
-    background-color: lightgrey;
 }
