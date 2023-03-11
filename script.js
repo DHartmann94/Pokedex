@@ -17,13 +17,20 @@ async function loadPokemonFromApi(startLoad) {
 
     document.getElementById('main-content').innerHTML += pokemonCardTemplate(startLoad, responseAsJsonPokemon);
     pokemonCardBackground(startLoad, responseAsJsonPokemon);
-
-    console.log('Loaded Pokemon', responseAsJsonPokemon);
+    pokemonCardType(startLoad, responseAsJsonPokemon);
 }
 
 function pokemonCardBackground(startLoad, responseAsJsonPokemon) {
-    let backgroundColour = responseAsJsonPokemon['types'][0]['type']['name'];
-    document.getElementById(`pokemon-card${startLoad}`).classList.add(`${backgroundColour}`);
+    let nameAndColour = responseAsJsonPokemon['types'][0]['type']['name'];
+    document.getElementById(`pokemon-card${startLoad}`).classList.add(`${nameAndColour}`);
+}
+
+function pokemonCardType(startLoad, responseAsJsonPokemon) {
+    let type = responseAsJsonPokemon['types'];
+    for(let i=0; i < type.length; i++) {
+        let nameAndColour = responseAsJsonPokemon['types'][`${i}`]['type']['name'];
+        document.getElementById(`type${startLoad}`).innerHTML += pokemonCardTypeTemplate(nameAndColour);
+    }
 }
 
 function pokemonCardTemplate(startLoad, responseAsJsonPokemon) {
@@ -37,11 +44,17 @@ function pokemonCardTemplate(startLoad, responseAsJsonPokemon) {
             <div>
                 <span><b>#${pokemonId}</b></span>
                 <h3>${pokemonNameFormatted}</h3>
-                <div class="type-container" id="type">Type 1</div>
-                <div class="type-container">Type 2</div>
+                <div id="type${startLoad}"></div>
             </div>
             <img src="${pokemonImg}" alt="Pokemon Img">
         </div>
+    `;
+}
+
+function pokemonCardTypeTemplate(nameAndColour) {
+    let name = nameAndColour.charAt(0).toUpperCase() + nameAndColour.slice(1).toLowerCase();
+    return /*html*/`
+    <div class="type-container ${nameAndColour}" id="type-container">${name}</div>
     `;
 }
 
@@ -49,10 +62,10 @@ function pokemonCardTemplate(startLoad, responseAsJsonPokemon) {
 /* Infinite Scroll */
 async function loadMorePokemon() {
 	if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !loading) {
-		// Überprüfen, ob das Ende der Seite erreicht wurde und keine Anfrage gesendet wird
-		startLoad = endLoad +1; // +1 verhindert das das erste Pokemon doppelt geladen wird
+		// Verifying that the end of the page has been reached and no request is sent
+		startLoad = endLoad +1; // +1 prevents the first pokemon from being loaded twice
 		endLoad = startLoad + 20;
-		loading = true; // Setzen der Variablen "loading" auf "true", um zu verhindern, dass mehrere Anfragen gesendet werden
+		loading = true; // Set the "loading" variable to true to prevent multiple requests from being sent
 		loadPokemon(); 
 	}
 }
