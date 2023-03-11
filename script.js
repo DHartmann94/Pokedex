@@ -1,60 +1,84 @@
-let responseAsJsonPokemon;
 let startLoad = 1;
-let endLoad = 5;
+let endLoad = 50;
 let loading = false;
 
 
+/* --- API --- */
+function getUrl(position) {
+    return `https://pokeapi.co/api/v2/pokemon/${position}/`;
+}
+
 async function loadPokemon() {
     for (startLoad; startLoad <= endLoad; startLoad++) {
-        await loadPokemonFromApi(startLoad);
+        let pokemon = await loadPokemonFromApi(startLoad);
+        generatePokemonCard(startLoad, pokemon);
     }
     loading = false;
 }
 
-async function loadPokemonFromApi(startLoad) {
-    let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${startLoad}`);
-    responseAsJsonPokemon = await response.json();
-
-    document.getElementById('main-content').innerHTML += pokemonCardTemplate(startLoad, responseAsJsonPokemon);
-    pokemonCardBackground(startLoad, responseAsJsonPokemon);
-    pokemonCardType(startLoad, responseAsJsonPokemon);
+async function loadPokemonFromApi(position) {
+    let url = getUrl(position);
+    let response = await fetch(url);
+    let responseAsJsonPokemon = await response.json();
+    return responseAsJsonPokemon;
 }
 
-function pokemonCardBackground(startLoad, responseAsJsonPokemon) {
-    let nameAndColour = responseAsJsonPokemon['types'][0]['type']['name'];
-    document.getElementById(`pokemon-card${startLoad}`).classList.add(`${nameAndColour}`);
+/* --- Pokemon Card --- */
+function generatePokemonCard(position, pokemon) {
+    document.getElementById('main-content').innerHTML += pokemonCardTemplate(position, pokemon);
+    pokemonCardBackground(position, pokemon);
+    pokemonCardType(position, pokemon);
 }
 
-function pokemonCardType(startLoad, responseAsJsonPokemon) {
-    let type = responseAsJsonPokemon['types'];
-    for(let i=0; i < type.length; i++) {
-        let nameAndColour = responseAsJsonPokemon['types'][`${i}`]['type']['name'];
-        document.getElementById(`type${startLoad}`).innerHTML += pokemonCardTypeTemplate(nameAndColour);
+function pokemonCardBackground(position, pokemon) {
+    let nameAndColour = pokemon['types'][0]['type']['name'];
+    document.getElementById(`pokemon-card${position}`).classList.add(`${nameAndColour}`);
+}
+
+function pokemonCardType(position, pokemon) {
+    let type = pokemon['types'];
+    for (let i = 0; i < type.length; i++) {
+        let nameAndColour = pokemon['types'][`${i}`]['type']['name'];
+        document.getElementById(`type${position}`).innerHTML += pokemonCardTypeTemplate(nameAndColour);
     }
 }
 
-/* Popup Pokemon */
+/* --- Pokemon Popup --- */
+async function popupPokemon(position) {
+    document.getElementById('body').classList.add('overflow-hidden');
+
+    let pokemon = await loadPokemonFromApi(position);
+    document.getElementById('main-content').innerHTML += pokemonPopupTemplate(position, pokemon);
+    pokemonPopupBackground(position, pokemon);
+}
+
+function pokemonPopupBackground(position, pokemon) {
+    let nameAndColour = pokemon['types'][0]['type']['name'];
+    document.getElementById(`pokemon-popup-card${position}`).classList.add(`${nameAndColour}`);
+}
+
 function closePopup() {
-    document.getElementById("popup-content").classList.add(`dnone`);
+    document.getElementById("popup-content").classList.add('dnone');
+    document.getElementById('body').classList.remove('overflow-hidden');
 }
 
 function doNotClose(event) {
     event.stopPropagation();
 }
 
-/* Templates */
-function pokemonCardTemplate(startLoad, responseAsJsonPokemon) {
-    let pokemonId = responseAsJsonPokemon['id'];
-    let pokemonName = responseAsJsonPokemon['name'];
+/* --- Templates --- */
+function pokemonCardTemplate(position, pokemon) {
+    let pokemonId = pokemon['id'];
+    let pokemonName = pokemon['name'];
     let pokemonNameFormatted = pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1).toLowerCase();
-    let pokemonImg = responseAsJsonPokemon['sprites']['other']['official-artwork']['front_default'];
-    
+    let pokemonImg = pokemon['sprites']['other']['official-artwork']['front_default'];
+
     return /*html*/`
-        <div class="pokemon-card" id="pokemon-card${startLoad}" onclick="popupPokemon(${startLoad})">
+        <div class="pokemon-card" id="pokemon-card${position}" onclick="popupPokemon(${position})">
             <div>
                 <span><b>#${pokemonId}</b></span>
                 <h3>${pokemonNameFormatted}</h3>
-                <div id="type${startLoad}"></div>
+                <div id="type${position}"></div>
             </div>
             <img src="${pokemonImg}" alt="Pokemon Img">
         </div>
@@ -68,19 +92,22 @@ function pokemonCardTypeTemplate(nameAndColour) {
     `;
 }
 
-function pokemonPopupTemplate() {
+function pokemonPopupTemplate(position, pokemon) {
+    let pokemonId = pokemon['id'];
+    let pokemonName = pokemon['name'];
+    let pokemonNameFormatted = pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1).toLowerCase();
+    let pokemonImg = pokemon['sprites']['other']['official-artwork']['front_default'];
+
     return /*html*/`
     <div class="popup-pokemon" id="popup-content" onclick="closePopup()">
         <img class="close-img" src="img/cancel-256.jpg" alt="Close Popup">
         <div class="pokemon-popup-card" onclick="doNotClose(event)">
-            <div class="popup-pokemon-top-container">
+            <div class="popup-pokemon-top-container" id="pokemon-popup-card${position}">
                 <div>
-                    <span><b># ID</b></span>
-                    <h3>NAME</h3>
-                    <div class="popup-pokemon-top-container-img">
-                        <img src="" alt="Pokemon Img">
-                    </div>
+                    <span><b># ${pokemonId}</b></span>
+                    <h3>${pokemonNameFormatted}</h3>
                 </div>
+                <img class="popup-img" src="${pokemonImg}" alt="Pokemon Img">
             </div>
             <div class="popup-pokemon-back-forward">
                 <span> Links </span>
@@ -95,7 +122,7 @@ function pokemonPopupTemplate() {
     `;
 }
 
-/* Loader & loading Pokemon */
+/* --- Loader & loading Pokemon --- */
 function showLoader() {
     document.getElementById('loader').classList.add('show');
 
@@ -103,23 +130,23 @@ function showLoader() {
         document.getElementById('loader').classList.remove('show');
 
         setTimeout(() => {
-            startLoad = endLoad +1; // +1 prevents the first pokemon from being loaded twice
+            startLoad = endLoad + 1; // +1 prevents the first pokemon from being loaded twice
             endLoad = startLoad + 20;
             loading = true; // Set the "loading" variable to true to prevent multiple requests from being sent
-            loadPokemon(); 
+            loadPokemon();
         }, 100)
 
     }, 1500)
 }
 
 
-/* Infinite Scroll */
+/* --- Infinite Scroll --- */
 async function loadMorePokemon() {
-	if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !loading) {
-		// Verifying that the end of the page has been reached and no request is sent
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !loading) {
+        // Verifying that the end of the page has been reached and no request is sent
 
         showLoader();
-	}
+    }
 }
 
 window.addEventListener("scroll", loadMorePokemon);
