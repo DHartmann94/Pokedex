@@ -155,21 +155,23 @@ h3 {
     flex-direction: column;
     border: 1px solid rgb(53, 48, 48);
     border-radius: 24px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.544);
 }
 
 .popup-pokemon-top-container {
     height: 40%;
-    padding: 8px;
+    padding: 10px;
+    margin-bottom: -35px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     border-top-right-radius: 24px;
     border-top-left-radius: 24px;
-    border-bottom: 1px solid black;
 }
 
 .popup-img {
     width: 200px;
+    margin-bottom: -10px;
+    z-index: 11;
 }
 
 .popup-pokemon-back-forward {
@@ -177,7 +179,24 @@ h3 {
     padding: 8px;
     display: flex;
     justify-content: space-between;
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
     background-color: rgb(247, 246, 246);
+}
+
+.arrow {
+    padding: 10px;
+    z-index: 12;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 100%;
+    cursor: pointer;
+}
+
+.arrow:hover {
+    background-color: lightgrey;
 }
 
 .popup-pokemon-base-stats {
@@ -185,7 +204,7 @@ h3 {
     display: flex;
     justify-content: center;
     background-color: rgb(247, 246, 246);
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid darkgrey;
 }
 
 .popup-pokemon-all-stats {
@@ -199,8 +218,8 @@ h3 {
 .close-img {
     width: 50px;
     position: fixed;
-    top: 10px;
-    right: 10px;
+    top: 32px;
+    right: 32px;
     border: 1px solid transparent;
     border-radius: 100%;
     cursor: pointer;

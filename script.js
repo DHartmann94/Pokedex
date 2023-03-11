@@ -122,10 +122,10 @@ function pokemonPopupTemplate(position, pokemon) {
                 <img class="popup-img" src="${pokemonImg}" alt="Pokemon Img">
             </div>
             <div class="popup-pokemon-back-forward">
-                <span> Links </span>
-                <span> Rechts </span>
+                <span class="arrow"><b><</b></span>
+                <span class="arrow"><b>></b></span>
             </div>
-            <span class="popup-pokemon-base-stats">Base Stats</span>
+            <span class="popup-pokemon-base-stats"><b>Base Stats</b></span>
             <div class="popup-pokemon-all-stats">
                 Alle STATS
             </div>
