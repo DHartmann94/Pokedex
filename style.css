@@ -105,13 +105,13 @@ h3 {
     align-items: center;
     border: 1px solid rgb(53, 48, 48);
     border-radius: 24px;
-    box-shadow: 0px 2px 8px rgba(0,0,0,0.144);
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.144);
     transition: 225ms ease-in-out;
     transform: scale(0.98);
 }
 
 .pokemon-card:hover {
-    box-shadow: 0px 4px 16px rgba(0,0,0,0.144);
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.144);
     transition: 225ms ease-in-out;
     transform: scale(1);
     cursor: pointer;
@@ -127,10 +127,10 @@ h3 {
     margin: 4px 0px 4px 0px;
     padding: 4px;
     border: 1px solid lightgrey;
-    border-radius: 8px;
+    border-radius: 25px;
     text-align: center;
     color: white;
-    box-shadow: 0px 2px 8px rgba(0,0,0,0.144);
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.144);
 }
 
 /* Pokemon Popup */
@@ -148,9 +148,8 @@ h3 {
 }
 
 .pokemon-popup-card {
-    width: 300px;
-    height: 450px;
-    margin: 16px;
+    width: 320px;
+    height: 500px;
     z-index: 10;
     display: flex;
     flex-direction: column;
@@ -170,7 +169,7 @@ h3 {
 }
 
 .popup-img {
-    width: 185px;
+    width: 200px;
 }
 
 .popup-pokemon-back-forward {
@@ -238,7 +237,7 @@ h3 {
 }
 
 .circle:nth-of-type(2) {
-    background-color: rgb(109,3,11);
+    background-color: rgb(109, 3, 11);
     animation-delay: 0.75s;
 }
 
@@ -249,5 +248,17 @@ h3 {
 @keyframes grow {
     50% {
         transform: scale(1);
+    }
+}
+
+@media (max-width: 475px) {
+    /* Navigation / Header */
+    .header {
+        height: 150px;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .header-img {
+        margin-bottom: 8px;
     }
 }

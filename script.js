@@ -1,5 +1,7 @@
 let startLoad = 1;
 let endLoad = 50;
+let baseStats = ['HP', 'Attack', 'Sp. Atk.', 'Defense', 'Sp. Def.', 'Speed']; // Defense and spDefense 250???
+let maxStats = [255, 190, 194, 230, 230, 180];
 let loading = false;
 
 
@@ -26,16 +28,16 @@ async function loadPokemonFromApi(position) {
 /* --- Pokemon Card --- */
 function generatePokemonCard(position, pokemon) {
     document.getElementById('main-content').innerHTML += pokemonCardTemplate(position, pokemon);
-    pokemonCardBackground(position, pokemon);
-    pokemonCardType(position, pokemon);
+    pokemonBackground(position, pokemon);
+    pokemonType(position, pokemon);
 }
 
-function pokemonCardBackground(position, pokemon) {
+function pokemonBackground(position, pokemon) {
     let nameAndColour = pokemon['types'][0]['type']['name'];
     document.getElementById(`pokemon-card${position}`).classList.add(`${nameAndColour}`);
 }
 
-function pokemonCardType(position, pokemon) {
+function pokemonType(position, pokemon) {
     let type = pokemon['types'];
     for (let i = 0; i < type.length; i++) {
         let nameAndColour = pokemon['types'][`${i}`]['type']['name'];
@@ -48,14 +50,23 @@ async function popupPokemon(position) {
     document.getElementById('body').classList.add('overflow-hidden');
 
     let pokemon = await loadPokemonFromApi(position);
-    document.getElementById('main-content').innerHTML += pokemonPopupTemplate(position, pokemon);
-    pokemonPopupBackground(position, pokemon);
+    document.getElementById('popup-open').innerHTML = pokemonPopupTemplate(position, pokemon);
+    pokemonBackground(position, pokemon);
+    pokemonType(position, pokemon);
 }
 
-function pokemonPopupBackground(position, pokemon) {
+/*function pokemonPopupBackground(position, pokemon) {
     let nameAndColour = pokemon['types'][0]['type']['name'];
     document.getElementById(`pokemon-popup-card${position}`).classList.add(`${nameAndColour}`);
 }
+
+function pokemonPopupType(position, pokemon) {
+    let type = pokemon['types'];
+    for (let i = 0; i < type.length; i++) {
+        let nameAndColour = pokemon['types'][`${i}`]['type']['name'];
+        document.getElementById(`type-popup${position}`).innerHTML += pokemonPopupTypeTemplate(nameAndColour);
+    }
+}*/
 
 function closePopup() {
     document.getElementById("popup-content").classList.add('dnone');
@@ -102,10 +113,11 @@ function pokemonPopupTemplate(position, pokemon) {
     <div class="popup-pokemon" id="popup-content" onclick="closePopup()">
         <img class="close-img" src="img/cancel-256.jpg" alt="Close Popup">
         <div class="pokemon-popup-card" onclick="doNotClose(event)">
-            <div class="popup-pokemon-top-container" id="pokemon-popup-card${position}">
+            <div class="popup-pokemon-top-container" id="pokemon-card${position}">
                 <div>
                     <span><b># ${pokemonId}</b></span>
                     <h3>${pokemonNameFormatted}</h3>
+                    <div id="type${position}"></div>
                 </div>
                 <img class="popup-img" src="${pokemonImg}" alt="Pokemon Img">
             </div>
@@ -119,6 +131,13 @@ function pokemonPopupTemplate(position, pokemon) {
             </div>
         </div>
     </div>
+    `;
+}
+
+function pokemonPopupTypeTemplate(nameAndColour) {
+    let name = nameAndColour.charAt(0).toUpperCase() + nameAndColour.slice(1).toLowerCase();
+    return /*html*/`
+    <div class="type-container ${nameAndColour}" id="type-container">${name}</div>
     `;
 }
 
