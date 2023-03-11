@@ -58,15 +58,30 @@ function pokemonCardTypeTemplate(nameAndColour) {
     `;
 }
 
+/* Loader & loading Pokemon */
+function showLoader() {
+    document.getElementById('loader').classList.add('show');
+
+    setTimeout(() => {
+        document.getElementById('loader').classList.remove('show');
+
+        setTimeout(() => {
+            startLoad = endLoad +1; // +1 prevents the first pokemon from being loaded twice
+            endLoad = startLoad + 20;
+            loading = true; // Set the "loading" variable to true to prevent multiple requests from being sent
+            loadPokemon(); 
+        }, 100)
+
+    }, 1500)
+}
+
 
 /* Infinite Scroll */
 async function loadMorePokemon() {
 	if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !loading) {
 		// Verifying that the end of the page has been reached and no request is sent
-		startLoad = endLoad +1; // +1 prevents the first pokemon from being loaded twice
-		endLoad = startLoad + 20;
-		loading = true; // Set the "loading" variable to true to prevent multiple requests from being sent
-		loadPokemon(); 
+
+        showLoader();
 	}
 }
 

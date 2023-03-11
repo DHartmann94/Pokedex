@@ -40,6 +40,7 @@ h3 {
     height: 100px;
     padding: 0px 16px 0px 16px;
     background-color: rgb(227, 53, 13);
+    border-bottom: 1px solid black;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.144);
     display: flex;
     justify-content: space-between;
@@ -122,4 +123,52 @@ h3 {
     text-align: center;
     color: white;
     box-shadow: 0px 2px 8px rgba(0,0,0,0.144);
+}
+
+/* Loader */
+.loader {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+}
+
+.loader.show {
+    opacity: 1;
+}
+
+.circle {
+    width: 40px;
+    height: 40px;
+    margin: -10px;
+    display: inline-block;
+    border-radius: 50%;
+    background-color: rgb(227, 53, 13);
+    transform: scale(0);
+    animation: grow 1.5s linear infinite;
+}
+
+.circle:nth-of-type(2) {
+    background-color: rgb(109,3,11);
+    animation-delay: 0.75s;
+}
+
+.circle:nth-of-type(3) {
+    animation-delay: 0.2s;
+}
+
+@keyframes grow {
+    50% {
+        transform: scale(1);
+    }
+}
+
+/* Fotter */
+.footer {
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 100px;
+    padding: 0px 16px 0px 16px;
+    background-color: lightgrey;
 }
