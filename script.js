@@ -33,15 +33,15 @@ function generatePokemonCard(position, pokemon) {
 }
 
 function pokemonBackground(position, pokemon) {
-    let nameAndColour = pokemon['types'][0]['type']['name'];
-    document.getElementById(`pokemon-card${position}`).classList.add(`${nameAndColour}`);
+    let nameAndColor = pokemon['types'][0]['type']['name'];
+    document.getElementById(`pokemon-card${position}`).classList.add(`${nameAndColor}`);
 }
 
 function pokemonType(position, pokemon) {
     let type = pokemon['types'];
     for (let i = 0; i < type.length; i++) {
-        let nameAndColour = pokemon['types'][`${i}`]['type']['name'];
-        document.getElementById(`type${position}`).innerHTML += pokemonCardTypeTemplate(nameAndColour);
+        let nameAndColor = pokemon['types'][`${i}`]['type']['name'];
+        document.getElementById(`type${position}`).innerHTML += pokemonCardTypeTemplate(nameAndColor);
     }
 }
 
@@ -56,15 +56,15 @@ async function popupPokemon(position) {
 }
 
 /*function pokemonPopupBackground(position, pokemon) {
-    let nameAndColour = pokemon['types'][0]['type']['name'];
-    document.getElementById(`pokemon-popup-card${position}`).classList.add(`${nameAndColour}`);
+    let nameAndColor = pokemon['types'][0]['type']['name'];
+    document.getElementById(`pokemon-popup-card${position}`).classList.add(`${nameAndColor}`);
 }
 
 function pokemonPopupType(position, pokemon) {
     let type = pokemon['types'];
     for (let i = 0; i < type.length; i++) {
-        let nameAndColour = pokemon['types'][`${i}`]['type']['name'];
-        document.getElementById(`type-popup${position}`).innerHTML += pokemonPopupTypeTemplate(nameAndColour);
+        let nameAndColor = pokemon['types'][`${i}`]['type']['name'];
+        document.getElementById(`type-popup${position}`).innerHTML += pokemonPopupTypeTemplate(nameAndColor);
     }
 }*/
 
@@ -96,10 +96,10 @@ function pokemonCardTemplate(position, pokemon) {
     `;
 }
 
-function pokemonCardTypeTemplate(nameAndColour) {
-    let name = nameAndColour.charAt(0).toUpperCase() + nameAndColour.slice(1).toLowerCase();
+function pokemonCardTypeTemplate(nameAndColor) {
+    let name = nameAndColor.charAt(0).toUpperCase() + nameAndColor.slice(1).toLowerCase();
     return /*html*/`
-    <div class="type-container ${nameAndColour}" id="type-container">${name}</div>
+    <div class="type-container ${nameAndColor}" id="type-container">${name}</div>
     `;
 }
 
