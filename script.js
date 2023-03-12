@@ -55,6 +55,22 @@ async function popupPokemon(position) {
     pokemonType(position, pokemon);
 }
 
+function previousPokemon(position) {
+    position--;
+    if (position == 0) {
+        position = 1;
+    }
+    popupPokemon(position);
+}
+
+function nextPokemon(position) {
+    position++;
+    if(position >= endLoad) {
+        position = endLoad;
+    }
+    popupPokemon(position);
+}
+
 /*function pokemonPopupBackground(position, pokemon) {
     let nameAndColor = pokemon['types'][0]['type']['name'];
     document.getElementById(`pokemon-popup-card${position}`).classList.add(`${nameAndColor}`);
@@ -122,8 +138,8 @@ function pokemonPopupTemplate(position, pokemon) {
                 <img class="popup-img" src="${pokemonImg}" alt="Pokemon Img">
             </div>
             <div class="popup-pokemon-back-forward">
-                <span class="arrow"><b><</b></span>
-                <span class="arrow"><b>></b></span>
+                <span class="arrow" onclick="previousPokemon(${position})"><b><</b></span>
+                <span class="arrow" onclick="nextPokemon(${position})"><b>></b></span>
             </div>
             <span class="popup-pokemon-base-stats"><b>Base Stats</b></span>
             <div class="popup-pokemon-all-stats">
