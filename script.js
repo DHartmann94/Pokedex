@@ -28,6 +28,7 @@ async function loadPokemonFromApi(position) {
 /* --- Pokemon Card --- */
 function generatePokemonCard(position, pokemon) {
     document.getElementById('main-content').innerHTML += pokemonCardTemplate(position, pokemon);
+    
     pokemonBackground(position, pokemon);
     pokemonType(position, pokemon);
 }
@@ -51,6 +52,7 @@ async function popupPokemon(position) {
 
     let pokemon = await loadPokemonFromApi(position);
     document.getElementById('popup-open').innerHTML = pokemonPopupTemplate(position, pokemon);
+
     pokemonBackground(position, pokemon);
     pokemonType(position, pokemon);
     baseStatsPopup(position, pokemon);
@@ -75,11 +77,11 @@ function nextPokemon(position) {
 function baseStatsPopup(position, pokemon) {
     for(let i=0; i < baseStats.length; i++) {
         document.getElementById(`base-stats${position}`).innerHTML += baseStatsTemplate(i, pokemon);
-        calcStatBarWidth(i, pokemon);
+        calcBaseStatBar(i, pokemon);
     }
 }
 
-function calcStatBarWidth(i, pokemon)  {
+function calcBaseStatBar(i, pokemon)  {
     let percent = +(pokemon['stats'][i]['base_stat'] / maxStats[i]) * 100;
     document.getElementById(`calculated-stat${i}`).style = `width: ${percent}%;`;
 }
@@ -140,8 +142,8 @@ function pokemonPopupTemplate(position, pokemon) {
                 <img class="popup-img" src="${pokemonImg}" alt="Pokemon Img">
             </div>
             <div class="popup-pokemon-next-previous">
-                <span class="arrow" onclick="previousPokemon(${position})"><b><</b></span>
-                <span class="arrow" onclick="nextPokemon(${position})"><b>></b></span>
+                <span class="arrow" onclick="previousPokemon(${position})"><b>&lArr;</b></span>
+                <span class="arrow" onclick="nextPokemon(${position})"><b>&rArr;</b></span>
             </div>
             <span class="popup-pokemon-info"><b>Base-Stats</b></span>
             <div class="popup-pokemon-bottom-container" id="base-stats${position}">
@@ -153,6 +155,7 @@ function pokemonPopupTemplate(position, pokemon) {
 
 function pokemonPopupTypeTemplate(nameAndColour) {
     let name = nameAndColour.charAt(0).toUpperCase() + nameAndColour.slice(1).toLowerCase();
+
     return /*html*/`
     <div class="type-container ${nameAndColour}" id="type-container">${name}</div>
     `;

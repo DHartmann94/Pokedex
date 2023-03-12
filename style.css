@@ -263,6 +263,16 @@ h3 {
 .calculated-stats {
     height: 100%;
     background-color: rgb(227, 53, 13);
+    animation: zoomIn 225ms ease-in-out;
+}
+
+@keyframes zoomIn {
+    from{
+        transform: scaleX(0);
+    }
+    to{
+        transform: scaleX(1);
+    }
 }
 
 /* Loader */
