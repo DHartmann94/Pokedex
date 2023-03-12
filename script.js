@@ -1,5 +1,5 @@
 let startLoad = 1;
-let endLoad = 50;
+let endLoad = 40;
 let baseStats = ['HP', 'Attack', 'Defense', 'Sp. Atk.', 'Sp. Def.', 'Speed'];
 let maxStats = [255, 190, 250, 194, 250, 180];
 let loadingPokemon = false;

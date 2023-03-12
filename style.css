@@ -1,9 +1,11 @@
 body {
     margin: 0px;
+    min-height: 105vh;
     font-family: 'Ubuntu', sans-serif;
     background-image: url(img/pokemon.jpg);
     background-repeat: no-repeat;
     background-position: center;
+    background-size: cover;
     background-attachment: fixed;
 }
 
