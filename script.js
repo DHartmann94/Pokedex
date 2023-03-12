@@ -2,7 +2,7 @@ let startLoad = 1;
 let endLoad = 50;
 let baseStats = ['HP', 'Attack', 'Sp. Atk.', 'Defense', 'Sp. Def.', 'Speed']; // Defense and spDefense 250???
 let maxStats = [255, 190, 194, 230, 230, 180];
-let loading = false;
+let loadingPokemon = false;
 
 
 /* --- API --- */
@@ -15,7 +15,7 @@ async function loadPokemon() {
         let pokemon = await loadPokemonFromApi(startLoad);
         generatePokemonCard(startLoad, pokemon);
     }
-    loading = false;
+    loadingPokemon = false;
 }
 
 async function loadPokemonFromApi(position) {
@@ -137,7 +137,7 @@ function pokemonPopupTemplate(position, pokemon) {
                 </div>
                 <img class="popup-img" src="${pokemonImg}" alt="Pokemon Img">
             </div>
-            <div class="popup-pokemon-back-forward">
+            <div class="popup-pokemon-next-previous">
                 <span class="arrow" onclick="previousPokemon(${position})"><b><</b></span>
                 <span class="arrow" onclick="nextPokemon(${position})"><b>></b></span>
             </div>
@@ -167,17 +167,16 @@ function showLoader() {
         setTimeout(() => {
             startLoad = endLoad + 1; // +1 prevents the first pokemon from being loaded twice
             endLoad = startLoad + 20;
-            loading = true; // Set the "loading" variable to true to prevent multiple requests from being sent
             loadPokemon();
         }, 100)
-
     }, 1500)
+    loadingPokemon = true; // Set the "loadingPokemon" variable to true to prevent multiple requests from being sent
 }
 
 
 /* --- Infinite Scroll --- */
 async function loadMorePokemon() {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !loading) {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !loadingPokemon) {
         // Verifying that the end of the page has been reached and no request is sent
 
         showLoader();

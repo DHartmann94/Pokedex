@@ -42,6 +42,8 @@ h3 {
 
 /* Navigation / Header */
 .header {
+    position: fixed;
+    z-index: 2;
     top: 0px;
     left: 0px;
     right: 0px;
@@ -88,7 +90,7 @@ h3 {
 .main-content {
     left: 0px;
     right: 0px;
-    margin: 64px 16px 64px 16px;
+    margin: 150px 16px 64px 16px;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -161,7 +163,7 @@ h3 {
 .popup-pokemon-top-container {
     height: 40%;
     padding: 10px;
-    margin-bottom: -35px;
+    margin-bottom: -50px;
     display: flex;
     justify-content: space-between;
     border-top-right-radius: 24px;
@@ -169,19 +171,19 @@ h3 {
 }
 
 .popup-img {
-    width: 200px;
-    margin-bottom: -10px;
+    width: 175px;
+    object-fit: contain;
     z-index: 11;
 }
 
-.popup-pokemon-back-forward {
+.popup-pokemon-next-previous {
     height: 5%;
     padding: 8px;
     display: flex;
     justify-content: space-between;
     border-top-right-radius: 16px;
     border-top-left-radius: 16px;
-    background-color: rgb(247, 246, 246);
+    background-color: rgba(247, 246, 246, 1);
 }
 
 .arrow {
@@ -192,6 +194,7 @@ h3 {
     align-items: center;
     border: 1px solid transparent;
     border-radius: 100%;
+    background-color: rgba(247, 246, 246, 0.7);
     cursor: pointer;
 }
 
@@ -203,7 +206,7 @@ h3 {
     height: 5%;
     display: flex;
     justify-content: center;
-    background-color: rgb(247, 246, 246);
+    background-color: rgba(247, 246, 246, 1);
     border-bottom: 1px solid darkgrey;
 }
 
