@@ -90,7 +90,7 @@ h3 {
 .main-content {
     left: 0px;
     right: 0px;
-    margin: 150px 16px 64px 16px;
+    margin: 160px 16px 64px 16px;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -136,6 +136,23 @@ h3 {
 }
 
 /* Pokemon Popup */
+.close-img {
+    width: 50px;
+    position: fixed;
+    top: 32px;
+    right: 32px;
+    border: 1px solid transparent;
+    border-radius: 100%;
+    cursor: pointer;
+    transition: 225ms ease-in-out;
+    transform: scale(0.98);
+}
+
+.close-img:hover {
+    transition: 225ms ease-in-out;
+    transform: scale(1);
+}
+
 .popup-pokemon {
     position: fixed;
     top: 0;
@@ -202,7 +219,7 @@ h3 {
     background-color: lightgrey;
 }
 
-.popup-pokemon-base-stats {
+.popup-pokemon-info {
     height: 5%;
     display: flex;
     justify-content: center;
@@ -210,29 +227,42 @@ h3 {
     border-bottom: 1px solid darkgrey;
 }
 
-.popup-pokemon-all-stats {
+.popup-pokemon-bottom-container {
     height: 50%;
     padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background-color: rgb(247, 246, 246);
     border-bottom-right-radius: 24px;
     border-bottom-left-radius: 24px;
 }
 
-.close-img {
-    width: 50px;
-    position: fixed;
-    top: 32px;
-    right: 32px;
-    border: 1px solid transparent;
-    border-radius: 100%;
-    cursor: pointer;
-    transition: 225ms ease-in-out;
-    transform: scale(0.98);
+.stats-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.close-img:hover {
-    transition: 225ms ease-in-out;
-    transform: scale(1);
+.name-stats {
+    width: 35%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.statbar-container {
+    width: 50%;
+}
+
+.total-statbar {
+    width: 100%;
+    height: 5px;
+    background-color: lightgrey;
+}
+
+.calculated-stats {
+    height: 100%;
+    background-color: rgb(227, 53, 13);
 }
 
 /* Loader */

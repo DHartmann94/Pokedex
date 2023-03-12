@@ -1,7 +1,7 @@
 let startLoad = 1;
 let endLoad = 50;
-let baseStats = ['HP', 'Attack', 'Sp. Atk.', 'Defense', 'Sp. Def.', 'Speed']; // Defense and spDefense 250???
-let maxStats = [255, 190, 194, 230, 230, 180];
+let baseStats = ['HP', 'Attack', 'Defense', 'Sp. Atk.', 'Sp. Def.', 'Speed'];
+let maxStats = [255, 190, 250, 194, 250, 180];
 let loadingPokemon = false;
 
 
@@ -53,6 +53,7 @@ async function popupPokemon(position) {
     document.getElementById('popup-open').innerHTML = pokemonPopupTemplate(position, pokemon);
     pokemonBackground(position, pokemon);
     pokemonType(position, pokemon);
+    baseStatsPopup(position, pokemon);
 }
 
 function previousPokemon(position) {
@@ -71,18 +72,17 @@ function nextPokemon(position) {
     popupPokemon(position);
 }
 
-/*function pokemonPopupBackground(position, pokemon) {
-    let nameAndColor = pokemon['types'][0]['type']['name'];
-    document.getElementById(`pokemon-popup-card${position}`).classList.add(`${nameAndColor}`);
+function baseStatsPopup(position, pokemon) {
+    for(let i=0; i < baseStats.length; i++) {
+        document.getElementById(`base-stats${position}`).innerHTML += baseStatsTemplate(i, pokemon);
+        calcStatBarWidth(i, pokemon);
+    }
 }
 
-function pokemonPopupType(position, pokemon) {
-    let type = pokemon['types'];
-    for (let i = 0; i < type.length; i++) {
-        let nameAndColor = pokemon['types'][`${i}`]['type']['name'];
-        document.getElementById(`type-popup${position}`).innerHTML += pokemonPopupTypeTemplate(nameAndColor);
-    }
-}*/
+function calcStatBarWidth(i, pokemon)  {
+    let percent = +(pokemon['stats'][i]['base_stat'] / maxStats[i]) * 100;
+    document.getElementById(`calculated-stat${i}`).style = `width: ${percent}%;`;
+}
 
 function closePopup() {
     document.getElementById("popup-content").classList.add('dnone');
@@ -105,7 +105,8 @@ function pokemonCardTemplate(position, pokemon) {
             <div>
                 <span><b>#${pokemonId}</b></span>
                 <h3>${pokemonNameFormatted}</h3>
-                <div id="type${position}"></div>
+                <div id="type${position}">
+                </div>
             </div>
             <img src="${pokemonImg}" alt="Pokemon Img">
         </div>
@@ -133,7 +134,8 @@ function pokemonPopupTemplate(position, pokemon) {
                 <div>
                     <span><b># ${pokemonId}</b></span>
                     <h3>${pokemonNameFormatted}</h3>
-                    <div id="type${position}"></div>
+                    <div id="type${position}">
+                    </div>
                 </div>
                 <img class="popup-img" src="${pokemonImg}" alt="Pokemon Img">
             </div>
@@ -141,9 +143,8 @@ function pokemonPopupTemplate(position, pokemon) {
                 <span class="arrow" onclick="previousPokemon(${position})"><b><</b></span>
                 <span class="arrow" onclick="nextPokemon(${position})"><b>></b></span>
             </div>
-            <span class="popup-pokemon-base-stats"><b>Base Stats</b></span>
-            <div class="popup-pokemon-all-stats">
-                Alle STATS
+            <span class="popup-pokemon-info"><b>Base-Stats</b></span>
+            <div class="popup-pokemon-bottom-container" id="base-stats${position}">
             </div>
         </div>
     </div>
@@ -154,6 +155,25 @@ function pokemonPopupTypeTemplate(nameAndColour) {
     let name = nameAndColour.charAt(0).toUpperCase() + nameAndColour.slice(1).toLowerCase();
     return /*html*/`
     <div class="type-container ${nameAndColour}" id="type-container">${name}</div>
+    `;
+}
+
+function baseStatsTemplate(i, pokemon) {
+    let baseStatName = baseStats[i];
+    let baseStatApi = pokemon['stats'][i]['base_stat'];
+
+    return /*html*/`
+    <div class="stats-container">
+        <div class="name-stats">
+            <div>${baseStatName}</div>
+            <div>${baseStatApi}</div>
+        </div>
+        <div class="statbar-container">
+            <div class="total-statbar">
+                <div class="calculated-stats" id="calculated-stat${i}"></div>
+            </div>
+        </div>
+    </div>
     `;
 }
 
