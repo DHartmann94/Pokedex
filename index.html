@@ -18,20 +18,24 @@
     <nav class="header">
         <img class="header-img" src="img/pokemon.2048x738.png" alt="Pokemon Logo">
         <div>
-            <input class="search-input" placeholder="Search..." type="text" required>
-            <button class="search-button">
+            <input class="search-input" id="search-input" placeholder="Search..." type="text" onkeyup="search()" required>
+            <button class="search-button" onclick="search()">
                 <img class="search-img" src="img/search-7-16.png" alt="search">
             </button>
         </div>
     </nav>
 
     <div class="main-content" id="main-content">
+        <div class="search-content" id="search-content"></div>
         <div id="popup-open"></div>
+        <div class="pokedex" id="pokedex"></div>
     </div>
 
-    <div class="loader" id="loader">
-        <div class="circle"></div>
-        <div class="circle"></div>
+    <div class="position-loader">
+        <div class="loader" id="loader">
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
     </div>
 </body>
 

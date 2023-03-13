@@ -93,6 +93,14 @@ h3 {
     left: 0px;
     right: 0px;
     margin: 160px 16px 64px 16px;
+}
+
+.pokedex {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.search-content {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -265,10 +273,10 @@ h3 {
 .calculated-stats {
     height: 100%;
     background-color: rgb(227, 53, 13);
-    animation: zoomIn 225ms ease-in-out;
+    animation: progress-fill 225ms ease-in-out;
 }
 
-@keyframes zoomIn {
+@keyframes progress-fill {
     from{
         transform: scaleX(0);
     }
@@ -277,12 +285,27 @@ h3 {
     }
 }
 
+/*@keyframes progress-fill {
+    from{
+        width: 0%;
+    }
+    to{
+        width: var(--progress-width, 0%);
+    }
+}*/
+
 /* Loader */
-.loader {
-    height: 50px;
+.position-loader {
+    margin-top: 64px;
+    margin-bottom: 64px;
     display: flex;
     justify-content: center;
+}
+.loader {
+    height: 50px;
+    width: 50px;
     opacity: 0;
+    animation: rotate 3s linear infinite;
 }
 
 .loader.show {
@@ -314,6 +337,15 @@ h3 {
         transform: scale(1);
     }
 }
+
+@keyframes rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Footer */
+
 
 @media (max-width: 475px) {
     /* Navigation / Header */
