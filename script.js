@@ -105,7 +105,8 @@ function baseStatsPopup(pokemon) {
 
 function calcBaseStatBar(i, pokemon) {
     let percent = +(pokemon['stats'][i]['base_stat'] / maxStats[i]) * 100;
-    document.getElementById(`calculated-stat${i}`).style = `width: ${percent}%;`;
+    document.getElementById(`calculated-stat${i}`).style.setProperty('--progress-percent', `${percent}%`);
+    //document.getElementById(`calculated-stat${i}`).style = `width: ${percent}%;`;
 }
 
 function previousPokemon(pokemonId) {
@@ -155,6 +156,7 @@ function pokemonCardTemplate(pokemon) {
 
 function pokemonCardTypeTemplate(typeAndColor) {
     let name = typeAndColor.charAt(0).toUpperCase() + typeAndColor.slice(1).toLowerCase();
+
     return /*html*/`
     <div class="type-container ${typeAndColor}" id="type-container">${name}</div>
     `;

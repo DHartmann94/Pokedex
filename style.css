@@ -273,26 +273,26 @@ h3 {
 .calculated-stats {
     height: 100%;
     background-color: rgb(227, 53, 13);
-    animation: progress-fill 225ms ease-in-out;
+    animation: progress-fill 500ms ease-in-out forwards ;
 }
 
-@keyframes progress-fill {
+/*@keyframes progress-fill {
     from{
         transform: scaleX(0);
     }
     to{
         transform: scaleX(1);
     }
-}
+}*/
 
-/*@keyframes progress-fill {
+@keyframes progress-fill {
     from{
         width: 0%;
     }
     to{
-        width: var(--progress-width, 0%);
+        width: var(--progress-percent, 0%);
     }
-}*/
+}
 
 /* Loader */
 .position-loader {
