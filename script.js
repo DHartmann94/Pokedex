@@ -1,9 +1,10 @@
 let startLoad = 1;
-let endLoad = 4;
+let endLoad = 40;
 let allPokemon = [];
 const baseStats = ['HP', 'Attack', 'Defense', 'Sp. Atk.', 'Sp. Def.', 'Speed'];
 const maxStats = [255, 190, 250, 194, 250, 180];
-let loadingPokemon = false;
+let loadingPokemon = false; // for loadMorePokemon() / infinite scroll
+let timeout = null; //for search(): prevent faulty loading
 
 
 /* --- API --- */
@@ -32,22 +33,20 @@ async function loadPokemonFromApi(position) {
     return responseAsJsonPokemon;
 }
 
-/* --- Search Pokemon --- */
 async function search() {
-    document.getElementById('search-content').innerHTML = '';
-    let searchInput = document.getElementById('search-input').value;
-    showSearchOrPokedex(searchInput);
+    clearTimeout(timeout);
+    timeout = setTimeout(async () => { // prevent faulty loading
+        document.getElementById('search-content').innerHTML = '';
+        let searchInput = document.getElementById('search-input').value;
+        showSearchOrPokedex(searchInput);
 
-    results = allPokemon.filter(pokemon => pokemon.name.toLowerCase().includes(searchInput.toLowerCase()));
-    for(let i=0; i < results.length; i++) {
-        let pokemonName = results[i]['name'];
-        let pokemon = await loadPokemonFromApi(pokemonName);
-        showSearch(pokemon);
-    }
-    //let pokemonName = results[0]['name'];
-    //let pokemon = await loadPokemonFromApi(pokemonName);
-
-    //showSearch(pokemon);
+        results = allPokemon.filter(pokemon => pokemon.name.toLowerCase().includes(searchInput.toLowerCase()));
+        for (let i = 0; i < results.length; i++) {
+            let pokemonName = results[i]['name'];
+            let pokemon = await loadPokemonFromApi(pokemonName);
+            showSearch(pokemon);
+        }
+    }, 750);
 }
 
 function showSearchOrPokedex(searchInput) {
@@ -245,7 +244,7 @@ function pokemonSearchTemplate(pokemon) {
             <img src="${pokemonImg}" alt="Pokemon Img">
         </div>
     `;
-} 
+}
 
 /* --- Templates Popup --- */
 function pokemonPopupTemplate(pokemon) {
