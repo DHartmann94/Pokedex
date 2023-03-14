@@ -242,7 +242,7 @@ h3 {
     padding: 8px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     background-color: rgb(247, 246, 246);
     border-bottom-right-radius: 24px;
     border-bottom-left-radius: 24px;
@@ -275,15 +275,6 @@ h3 {
     background-color: rgb(227, 53, 13);
     animation: progress-fill 500ms ease-in-out forwards ;
 }
-
-/*@keyframes progress-fill {
-    from{
-        transform: scaleX(0);
-    }
-    to{
-        transform: scaleX(1);
-    }
-}*/
 
 @keyframes progress-fill {
     from{

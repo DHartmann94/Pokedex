@@ -1,5 +1,5 @@
 let startLoad = 1;
-let endLoad = 5;
+let endLoad = 4;
 let allPokemon = [];
 const baseStats = ['HP', 'Attack', 'Defense', 'Sp. Atk.', 'Sp. Def.', 'Speed'];
 const maxStats = [255, 190, 250, 194, 250, 180];
@@ -12,8 +12,8 @@ function getUrl(position) {
 }
 
 async function loadAllPokemon() {
-    let urlAll = `https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0`;
-    allPokemon = (await (await fetch(urlAll)).json()).results;
+    let urlAll = `https://pokeapi.co/api/v2/pokemon?limit=1008&offset=0`; // api only with: pokemon name and url
+    allPokemon = (await (await fetch(urlAll)).json()).results; // fetch and parse in one
 }
 
 async function loadPokemon() {
@@ -27,13 +27,30 @@ async function loadPokemon() {
 
 async function loadPokemonFromApi(position) {
     let url = getUrl(position);
-    let response = await fetch(url);
-    let responseAsJsonPokemon = await response.json();
+    let response = await fetch(url); // fetch
+    let responseAsJsonPokemon = await response.json(); // parsen
     return responseAsJsonPokemon;
 }
 
 /* --- Search Pokemon --- */
-function showSearchOrCards(searchInput) {
+async function search() {
+    document.getElementById('search-content').innerHTML = '';
+    let searchInput = document.getElementById('search-input').value;
+    showSearchOrPokedex(searchInput);
+
+    results = allPokemon.filter(pokemon => pokemon.name.toLowerCase().includes(searchInput.toLowerCase()));
+    for(let i=0; i < results.length; i++) {
+        let pokemonName = results[i]['name'];
+        let pokemon = await loadPokemonFromApi(pokemonName);
+        showSearch(pokemon);
+    }
+    //let pokemonName = results[0]['name'];
+    //let pokemon = await loadPokemonFromApi(pokemonName);
+
+    //showSearch(pokemon);
+}
+
+function showSearchOrPokedex(searchInput) {
     if (searchInput <= '') {
         document.getElementById('pokedex').classList.remove('dnone');
         document.getElementById('search-content').classList.add('dnone');
@@ -43,22 +60,28 @@ function showSearchOrCards(searchInput) {
     }
 }
 
-async function search() {
-    let searchInput = document.getElementById('search-input').value;
-    showSearchOrCards(searchInput);
-    results = allPokemon.filter(p => p.name.toLowerCase().includes(searchInput.toLowerCase()));
-
-    let pokemonName = results[0]['name'];
-    let pokemon = await loadPokemonFromApi(pokemonName);
-    showSearch(pokemon);
-}
-
 function showSearch(pokemon) {
-    document.getElementById('search-content').innerHTML = pokemonCardTemplate(pokemon);
+    document.getElementById('search-content').innerHTML += pokemonSearchTemplate(pokemon);
 
-    pokemonBackground(pokemon);
-    pokemonType(pokemon);
+    searchPokemonBackground(pokemon);
+    searchPokemonType(pokemon);
 }
+
+function searchPokemonBackground(pokemon) {
+    let typeAndColor = pokemon['types'][0]['type']['name'];
+    let pokemonId = pokemon['id'];
+    document.getElementById(`pokemon-search${pokemonId}`).classList.add(`${typeAndColor}`);
+}
+
+function searchPokemonType(pokemon) {
+    let type = pokemon['types'];
+    let pokemonId = pokemon['id'];
+    for (let i = 0; i < type.length; i++) {
+        let typeAndColor = pokemon['types'][`${i}`]['type']['name'];
+        document.getElementById(`type-search${pokemonId}`).innerHTML += pokemonTypeTemplate(typeAndColor);
+    }
+}
+
 
 /* --- Pokemon Card --- */
 function generatePokemonCard(pokemon) {
@@ -79,7 +102,7 @@ function pokemonType(pokemon) {
     let pokemonId = pokemon['id'];
     for (let i = 0; i < type.length; i++) {
         let typeAndColor = pokemon['types'][`${i}`]['type']['name'];
-        document.getElementById(`type${pokemonId}`).innerHTML += pokemonCardTypeTemplate(typeAndColor);
+        document.getElementById(`type${pokemonId}`).innerHTML += pokemonTypeTemplate(typeAndColor);
     }
 }
 
@@ -90,9 +113,24 @@ async function popupPokemon(pokemonId) {
     let pokemon = await loadPokemonFromApi(pokemonId);
     document.getElementById('popup-open').innerHTML = pokemonPopupTemplate(pokemon);
 
-    pokemonBackground(pokemon);
-    pokemonType(pokemon);
+    popupBackground(pokemon);
+    popupType(pokemon);
     baseStatsPopup(pokemon);
+}
+
+function popupBackground(pokemon) {
+    let typeAndColor = pokemon['types'][0]['type']['name'];
+    let pokemonId = pokemon['id'];
+    document.getElementById(`pokemon-card-pupup${pokemonId}`).classList.add(`${typeAndColor}`);
+}
+
+function popupType(pokemon) {
+    let type = pokemon['types'];
+    let pokemonId = pokemon['id'];
+    for (let i = 0; i < type.length; i++) {
+        let typeAndColor = pokemon['types'][`${i}`]['type']['name'];
+        document.getElementById(`type-popup${pokemonId}`).innerHTML += pokemonTypeTemplate(typeAndColor);
+    }
 }
 
 function baseStatsPopup(pokemon) {
@@ -106,12 +144,11 @@ function baseStatsPopup(pokemon) {
 function calcBaseStatBar(i, pokemon) {
     let percent = +(pokemon['stats'][i]['base_stat'] / maxStats[i]) * 100;
     document.getElementById(`calculated-stat${i}`).style.setProperty('--progress-percent', `${percent}%`);
-    //document.getElementById(`calculated-stat${i}`).style = `width: ${percent}%;`;
 }
 
 function previousPokemon(pokemonId) {
     pokemonId--;
-    if (pokemonId == 0) {
+    if (pokemonId === 0) {
         pokemonId = 1;
     }
     popupPokemon(pokemonId);
@@ -134,7 +171,35 @@ function doNotClose(event) {
     event.stopPropagation();
 }
 
+/* --- Loader & loading Pokemon --- */
+function showLoader() {
+    document.getElementById('loader').classList.add('show');
+
+    setTimeout(() => {
+        document.getElementById('loader').classList.remove('show');
+
+        setTimeout(async () => {
+            startLoad = endLoad + 1; // +1 prevents the first pokemon from being loaded twice
+            endLoad = startLoad + 20;
+            await loadPokemon();
+        }, 100)
+    }, 2000)
+    loadingPokemon = true; // Set the "loadingPokemon" variable to true to prevent multiple requests from being sent
+}
+
+/* --- Infinite Scroll --- */
+async function loadMorePokemon() {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !loadingPokemon) {
+        // Verifying that the end of the page has been reached and no request is sent
+
+        showLoader();
+    }
+}
+
+window.addEventListener("wheel", loadMorePokemon); // or scroll
+
 /* --- Templates --- */
+/* --- Templates Cards --- */
 function pokemonCardTemplate(pokemon) {
     let pokemonId = pokemon['id'];
     let pokemonName = pokemon['name'];
@@ -154,14 +219,35 @@ function pokemonCardTemplate(pokemon) {
     `;
 }
 
-function pokemonCardTypeTemplate(typeAndColor) {
+function pokemonTypeTemplate(typeAndColor) {
     let name = typeAndColor.charAt(0).toUpperCase() + typeAndColor.slice(1).toLowerCase();
 
     return /*html*/`
-    <div class="type-container ${typeAndColor}" id="type-container">${name}</div>
+    <div class="type-container ${typeAndColor}">${name}</div>
     `;
 }
 
+/* --- Templates Search --- */
+function pokemonSearchTemplate(pokemon) {
+    let pokemonId = pokemon['id'];
+    let pokemonName = pokemon['name'];
+    let pokemonNameFormatted = pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1).toLowerCase();
+    let pokemonImg = pokemon['sprites']['other']['official-artwork']['front_default'];
+
+    return /*html*/`
+        <div class="pokemon-card" id="pokemon-search${pokemonId}" onclick="popupPokemon(${pokemonId})">
+            <div>
+                <span><b>#${pokemonId}</b></span>
+                <h3>${pokemonNameFormatted}</h3>
+                <div id="type-search${pokemonId}">
+                </div>
+            </div>
+            <img src="${pokemonImg}" alt="Pokemon Img">
+        </div>
+    `;
+} 
+
+/* --- Templates Popup --- */
 function pokemonPopupTemplate(pokemon) {
     let pokemonId = pokemon['id'];
     let pokemonName = pokemon['name'];
@@ -172,11 +258,11 @@ function pokemonPopupTemplate(pokemon) {
     <div class="popup-pokemon" id="popup-content" onclick="closePopup()">
         <img class="close-img" src="img/cancel-256.jpg" alt="Close Popup">
         <div class="pokemon-popup-card" onclick="doNotClose(event)">
-            <div class="popup-pokemon-top-container" id="pokemon-card${pokemonId}">
+            <div class="popup-pokemon-top-container" id="pokemon-card-pupup${pokemonId}">
                 <div>
                     <span><b># ${pokemonId}</b></span>
                     <h3>${pokemonNameFormatted}</h3>
-                    <div id="type${pokemonId}">
+                    <div id="type-popup${pokemonId}">
                     </div>
                 </div>
                 <img class="popup-img" src="${pokemonImg}" alt="Pokemon Img">
@@ -190,14 +276,6 @@ function pokemonPopupTemplate(pokemon) {
             </div>
         </div>
     </div>
-    `;
-}
-
-function pokemonPopupTypeTemplate(typeAndColor) {
-    let name = typeAndColor.charAt(0).toUpperCase() + typeAndColor.slice(1).toLowerCase();
-
-    return /*html*/`
-    <div class="type-container ${typeAndColor}" id="type-container">${name}</div>
     `;
 }
 
@@ -219,31 +297,3 @@ function baseStatsTemplate(i, pokemon) {
     </div>
     `;
 }
-
-/* --- Loader & loading Pokemon --- */
-function showLoader() {
-    document.getElementById('loader').classList.add('show');
-
-    setTimeout(() => {
-        document.getElementById('loader').classList.remove('show');
-
-        setTimeout(async () => {
-            startLoad = endLoad + 1; // +1 prevents the first pokemon from being loaded twice
-            endLoad = startLoad + 20;
-            await loadPokemon();
-        }, 100)
-    }, 1500)
-    loadingPokemon = true; // Set the "loadingPokemon" variable to true to prevent multiple requests from being sent
-}
-
-
-/* --- Infinite Scroll --- */
-async function loadMorePokemon() {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !loadingPokemon) {
-        // Verifying that the end of the page has been reached and no request is sent
-
-        showLoader();
-    }
-}
-
-window.addEventListener("wheel", loadMorePokemon); // or scroll
