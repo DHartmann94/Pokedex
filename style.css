@@ -248,9 +248,24 @@ h3 {
     border-bottom-left-radius: 24px;
 }
 
+.weight-height-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.weight-height {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.weight-height-font {
+    font-size: 12px;
+}
+
 .stats-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 }
 
