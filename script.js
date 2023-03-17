@@ -4,7 +4,7 @@ let allPokemon = [];
 const baseStats = ['HP', 'Attack', 'Defense', 'Sp. Atk.', 'Sp. Def.', 'Speed'];
 const maxStats = [255, 190, 250, 194, 250, 180];
 let loadingPokemon = false; // for loadMorePokemon() / infinite scroll
-let timeout = null; 
+let timeout = null;
 let requestInProgress = false; //for search(): prevent faulty loading by input
 
 
@@ -30,7 +30,7 @@ async function loadPokemon() {
 async function loadPokemonFromApi(position) {
     let url = getUrl(position);
     let response = await fetch(url);
-    let responseAsJsonPokemon = await response.json(); 
+    let responseAsJsonPokemon = await response.json();
     return responseAsJsonPokemon;
 }
 /* --- General --- */
@@ -45,11 +45,7 @@ function typecolorAndType(pokemon, idPrefix) {
 
 /* --- Search --- */
 async function search() {
-    if (requestInProgress) {
-        // One request is already in progress, waiting for it to complete
-        return;
-    }
-
+    requestInProgressSearch();
     clearTimeout(timeout);
     requestInProgress = true;
     
@@ -58,19 +54,30 @@ async function search() {
         let searchInput = document.getElementById('search-input').value;
 
         showSearchOrPokedex(searchInput);
-
         results = allPokemon.filter(pokemon => pokemon.name.toLowerCase().startsWith(searchInput.toLowerCase()));
-        if(results.length > 0) {
-        for (let i = 0; i < results.length; i++) {
-            let pokemonName = results[i]['name'];
-            let pokemon = await loadPokemonFromApi(pokemonName);
-            showSearch(pokemon);
+
+        if (results.length > 0) {
+            await generatePokemonCardFromSearch(results);
+        } else {
+            document.getElementById('search-content').innerHTML = '<h2>No Pokémon found with this name.</h2>';
         }
-    } else {
-        document.getElementById('search-content').innerHTML = '<h2>No Pokémon found with this name.</h2>';
-    }
         requestInProgress = false; // prevent faulty loading by input
     }, 1500);
+}
+
+function requestInProgressSearch() {
+    if (requestInProgress) {
+        // One request is already in progress, waiting for it to complete
+        return;
+    }
+}
+
+async function generatePokemonCardFromSearch(results) {
+    for (let i = 0; i < results.length; i++) {
+        let pokemonName = results[i]['name'];
+        let pokemon = await loadPokemonFromApi(pokemonName);
+        showSearch(pokemon);
+    }
 }
 
 function showSearchOrPokedex(searchInput) {
@@ -88,14 +95,14 @@ function showSearchOrPokedex(searchInput) {
 function showSearch(pokemon) {
     document.getElementById('search-content').innerHTML += pokemonSearchTemplate(pokemon);
 
-    typecolorAndType(pokemon, 'type-search'); 
+    typecolorAndType(pokemon, 'type-search');
 }
 
 /* --- Pokemon Card --- */
 function generatePokemonCard(pokemon) {
     document.getElementById('pokedex').innerHTML += pokemonCardTemplate(pokemon);
 
-    typecolorAndType(pokemon, 'type'); 
+    typecolorAndType(pokemon, 'type');
 }
 
 /* --- Pokemon Popup --- */
