@@ -44,25 +44,14 @@ function typecolorAndType(pokemon, idPrefix) {
 }
 
 /* --- Search --- */
-async function search() {
+function search() {
     requestInProgressSearch();
-    clearTimeout(timeout);
     requestInProgress = true;
-    
+    clearTimeout(timeout);
+
     timeout = setTimeout(async () => {
-        document.getElementById('search-content').innerHTML = '';
-        let searchInput = document.getElementById('search-input').value;
-
-        showSearchOrPokedex(searchInput);
-        results = allPokemon.filter(pokemon => pokemon.name.toLowerCase().startsWith(searchInput.toLowerCase()));
-
-        if (results.length > 0) {
-            await generatePokemonCardFromSearch(results);
-        } else {
-            document.getElementById('search-content').innerHTML = '<h2>No Pokémon found with this name.</h2>';
-        }
-        requestInProgress = false; // prevent faulty loading by input
-    }, 1500);
+        await startSearch();
+    }, 1000);
 }
 
 function requestInProgressSearch() {
@@ -70,6 +59,21 @@ function requestInProgressSearch() {
         // One request is already in progress, waiting for it to complete
         return;
     }
+}
+
+async function startSearch() {
+    document.getElementById('search-content').innerHTML = '';
+    let searchInput = document.getElementById('search-input').value;
+
+    showSearchOrPokedex(searchInput);
+    results = allPokemon.filter(pokemon => pokemon.name.toLowerCase().startsWith(searchInput.toLowerCase()));
+
+    if (results.length > 0) {
+        await generatePokemonCardFromSearch(results);
+    } else {
+        document.getElementById('search-content').innerHTML = '<h2>No Pokémon found with this name.</h2>';
+    }
+    requestInProgress = false; // prevent faulty loading by input
 }
 
 async function generatePokemonCardFromSearch(results) {
@@ -158,7 +162,7 @@ function doNotClose(event) {
     event.stopPropagation();
 }
 
-/* --- Loader & loading Pokemon --- */
+/* --- Loader & loading Pokemon-Card --- */
 function showLoader() {
     document.getElementById('loader').classList.add('show');
 
@@ -166,19 +170,23 @@ function showLoader() {
         document.getElementById('loader').classList.remove('show');
 
         setTimeout(async () => {
-            startLoad = endLoad + 1; // +1 prevents the first pokemon from being loaded twice
-            endLoad = startLoad + 20;
-            await loadPokemon();
+            await loadNextPokemon();
         }, 100)
     }, 2000)
-    loadingPokemon = true; // Set the "loadingPokemon" variable to true to prevent multiple requests from being sent
+}
+
+async function loadNextPokemon() {
+    startLoad = endLoad + 1; // +1 prevents the first pokemon from being loaded twice
+    endLoad = startLoad + 20;
+    await loadPokemon();
 }
 
 /* --- Infinite Scroll --- */
-async function loadMorePokemon() {
+function loadMorePokemon() {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !loadingPokemon) {
         // Verifying that the end of the page has been reached and no request is sent
 
+        loadingPokemon = true; // Set the "loadingPokemon" variable to true to prevent multiple requests from being sent
         showLoader();
     }
 }
