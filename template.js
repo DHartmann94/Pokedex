@@ -94,8 +94,6 @@ function pokemonPopupTemplate(pokemon) {
 }
 
 function pokemonPopupNextPrevious(pokemonId) {
-
-
     return`
     <span class="arrow" onclick="previousPokemon(${pokemonId})"><b>&#8678;</b></span>
     <span class="arrow" onclick="nextPokemon(${pokemonId})"><b>&#8680;</b></span>
