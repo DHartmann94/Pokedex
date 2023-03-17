@@ -37,7 +37,7 @@ function pokemonSearchTemplate(pokemon) {
     let typeAndColor = pokemon['types'][0]['type']['name'];
 
     return /*html*/`
-        <div class="pokemon-card ${typeAndColor}" id="pokemon-search${pokemonId}" onclick="popupPokemon(${pokemonId})">
+        <div class="pokemon-card ${typeAndColor}" id="pokemon-search${pokemonId}" onclick="popupPokemon(${pokemonId}, nextAndPrevious = false)">
             <div>
                 <span><b>#${pokemonId}</b></span>
                 <h3>${pokemonNameFormatted}</h3>
@@ -72,9 +72,8 @@ function pokemonPopupTemplate(pokemon) {
                 </div>
                 <img class="popup-img" src="${pokemonImg}" alt="Pokemon Img">
             </div>
-            <div class="popup-pokemon-next-previous">
-                <span class="arrow" onclick="previousPokemon(${pokemonId})"><b>&#8678;</b></span>
-                <span class="arrow" onclick="nextPokemon(${pokemonId})"><b>&#8680;</b></span>
+            <div class="popup-pokemon-next-previous" id="next-and-previous${pokemonId}">
+
             </div>
             <span class="popup-pokemon-info"><b>Base-Stats</b></span>
             <div class="popup-pokemon-bottom-container" id="base-stats${pokemonId}">
@@ -91,6 +90,15 @@ function pokemonPopupTemplate(pokemon) {
             </div>
         </div>
     </div>
+    `;
+}
+
+function pokemonPopupNextPrevious(pokemonId) {
+
+
+    return`
+    <span class="arrow" onclick="previousPokemon(${pokemonId})"><b>&#8678;</b></span>
+    <span class="arrow" onclick="nextPokemon(${pokemonId})"><b>&#8680;</b></span>
     `;
 }
 

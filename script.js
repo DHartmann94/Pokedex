@@ -5,7 +5,7 @@ const baseStats = ['HP', 'Attack', 'Defense', 'Sp. Atk.', 'Sp. Def.', 'Speed'];
 const maxStats = [255, 190, 250, 194, 250, 180];
 let loadingPokemon = false; // for loadMorePokemon() / infinite scroll
 let timeout = null; 
-//let requestInProgress = false; ////for search(): prevent faulty loading by input
+let requestInProgress = false; //for search(): prevent faulty loading by input
 
 
 /* --- API --- */
@@ -15,7 +15,7 @@ function getUrl(position) {
 
 async function loadAllPokemon() {
     let urlAll = `https://pokeapi.co/api/v2/pokemon?limit=1008&offset=0`; // api only with: pokemon name and url
-    allPokemon = (await (await fetch(urlAll)).json()).results; // fetch and parse in one
+    allPokemon = (await (await fetch(urlAll)).json()).results;
 }
 
 async function loadPokemon() {
@@ -45,15 +45,15 @@ function typecolorAndType(pokemon, idPrefix) {
 
 /* --- Search --- */
 async function search() {
-    /*if (requestInProgress) {
+    if (requestInProgress) {
         // One request is already in progress, waiting for it to complete
         return;
-    }*/
+    }
 
     clearTimeout(timeout);
-    //requestInProgress = true;
+    requestInProgress = true;
     
-    timeout = setTimeout(async () => { // prevent faulty loading by input
+    timeout = setTimeout(async () => {
         document.getElementById('search-content').innerHTML = '';
         let searchInput = document.getElementById('search-input').value;
 
@@ -69,8 +69,8 @@ async function search() {
     } else {
         document.getElementById('search-content').innerHTML = '<h2>No Pokémon found with this name.</h2>';
     }
-        //requestInProgress = false;
-    }, 700);
+        requestInProgress = false; // prevent faulty loading by input
+    }, 1500);
 }
 
 function showSearchOrPokedex(searchInput) {
@@ -99,7 +99,7 @@ function generatePokemonCard(pokemon) {
 }
 
 /* --- Pokemon Popup --- */
-async function popupPokemon(pokemonId) {
+async function popupPokemon(pokemonId, nextAndPrevious = true) {
     document.getElementById('body').classList.add('overflow-hidden');
 
     let pokemon = await loadPokemonFromApi(pokemonId);
@@ -107,6 +107,10 @@ async function popupPokemon(pokemonId) {
 
     typecolorAndType(pokemon, 'type-popup');
     baseStatsPopup(pokemon);
+
+    if (nextAndPrevious) { // not open from search()
+        document.getElementById(`next-and-previous${pokemonId}`).innerHTML = pokemonPopupNextPrevious(pokemonId);
+    }
 }
 
 function baseStatsPopup(pokemon) {
