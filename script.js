@@ -140,15 +140,15 @@ function calcBaseStatBar(i, pokemon) {
 function previousPokemon(pokemonId) {
     pokemonId--;
     if (pokemonId === 0) {
-        pokemonId = 1;
+        return;
     }
     popupPokemon(pokemonId);
 }
 
 function nextPokemon(pokemonId) {
     pokemonId++;
-    if (pokemonId >= endLoad) {
-        pokemonId = endLoad;
+    if (pokemonId > endLoad) {
+        return;
     }
     popupPokemon(pokemonId);
 }
