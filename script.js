@@ -213,4 +213,4 @@ function loadMorePokemon() {
     }
 }
 
-window.addEventListener("wheel", loadMorePokemon); 
+window.addEventListener("scroll", loadMorePokemon); 
