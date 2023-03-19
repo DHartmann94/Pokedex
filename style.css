@@ -301,21 +301,27 @@ h3 {
 }
 
 /* Loader */
-.position-loader {
+.position-loader-pokedex {
     margin-top: 64px;
     margin-bottom: 64px;
     display: flex;
     justify-content: center;
 }
+
+.position-loader-search {
+    display: flex;
+    justify-content: center;
+}
+
 .loader {
     height: 50px;
     width: 50px;
-    opacity: 0;
+    display: none;
     animation: rotate 3s linear infinite;
 }
 
-.loader.show {
-    opacity: 1;
+.show {
+    display: flex;
 }
 
 .circle {

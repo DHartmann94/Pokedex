@@ -75,6 +75,7 @@ function startSearch() {
         return;
     }
 
+    showLoaderSearch();
     results = allPokemon.filter(pokemon => pokemon.name.toLowerCase().startsWith(searchInput.toLowerCase()));
     searchResults(results);
 }
@@ -85,6 +86,8 @@ async function searchResults(results) {
     } else {
         document.getElementById('search-content').innerHTML = '<h2>No Pokémon found with this name.</h2>';
     }
+
+    hideLoaderSearch();
     requestInProgress = false; // prevent faulty loading by input
 }
 
@@ -94,6 +97,12 @@ async function generatePokemonCardFromSearch(results) {
         let pokemon = await loadPokemonFromApi(pokemonName);
         showSearch(pokemon);
     }
+}
+
+function showSearch(pokemon) {
+    document.getElementById('search-content').innerHTML += pokemonSearchTemplate(pokemon);
+
+    typecolorAndType(pokemon, 'type-search');
 }
 
 function showSearchOrPokedex(searchInput) {
@@ -108,10 +117,12 @@ function showSearchOrPokedex(searchInput) {
     }
 }
 
-function showSearch(pokemon) {
-    document.getElementById('search-content').innerHTML += pokemonSearchTemplate(pokemon);
+function showLoaderSearch() {
+    document.getElementById('loader-search').classList.add('show');
+}
 
-    typecolorAndType(pokemon, 'type-search');
+function hideLoaderSearch() {
+    document.getElementById('loader-search').classList.remove('show');
 }
 
 /* --- Pokemon Card --- */
@@ -176,13 +187,12 @@ function doNotClose(event) {
 
 /* --- Loader & loading Pokemon-Card --- */
 function showLoader() {
-    document.getElementById('loader').classList.add('show');
+    document.getElementById('loader-pokedex').classList.add('show');
 
     setTimeout(() => {
-        document.getElementById('loader').classList.remove('show');
-
         setTimeout(async () => {
             await loadNextPokemon();
+            document.getElementById('loader-pokedex').classList.remove('show');
         }, 100)
     }, 2000)
 }
@@ -203,4 +213,4 @@ function loadMorePokemon() {
     }
 }
 
-window.addEventListener("scroll", loadMorePokemon); 
+window.addEventListener("wheel", loadMorePokemon); 
