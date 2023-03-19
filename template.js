@@ -8,7 +8,7 @@ function pokemonCardTemplate(pokemon) {
     let typeAndColor = pokemon['types'][0]['type']['name'];
 
     return /*html*/`
-        <div class="pokemon-card ${typeAndColor}" id="pokemon-card${pokemonId}" onclick="popupPokemon(${pokemonId})">
+        <div class="pokemon-card ${typeAndColor}" onclick="popupPokemon(${pokemonId})">
             <div>
                 <span><b>#${pokemonId}</b></span>
                 <h3>${pokemonNameFormatted}</h3>
@@ -37,7 +37,7 @@ function pokemonSearchTemplate(pokemon) {
     let typeAndColor = pokemon['types'][0]['type']['name'];
 
     return /*html*/`
-        <div class="pokemon-card ${typeAndColor}" id="pokemon-search${pokemonId}" onclick="popupPokemon(${pokemonId}, nextAndPrevious = false)">
+        <div class="pokemon-card ${typeAndColor}" onclick="popupPokemon(${pokemonId}, nextAndPrevious = false)">
             <div>
                 <span><b>#${pokemonId}</b></span>
                 <h3>${pokemonNameFormatted}</h3>
@@ -63,7 +63,7 @@ function pokemonPopupTemplate(pokemon) {
     <div class="popup-pokemon" id="popup-content" onclick="closePopup()">
         <img class="close-img" src="img/cancel-256.jpg" alt="Close Popup">
         <div class="pokemon-popup-card" onclick="doNotClose(event)">
-            <div class="popup-pokemon-top-container ${typeAndColor}" id="pokemon-card-pupup${pokemonId}">
+            <div class="popup-pokemon-top-container ${typeAndColor}">
                 <div>
                     <span><b># ${pokemonId}</b></span>
                     <h3>${pokemonNameFormatted}</h3>
