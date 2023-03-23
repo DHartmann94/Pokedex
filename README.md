@@ -1,4 +1,4 @@
-# Pokedex
+# Pokédex
 
 This is a Pokédex web application that allows users to view information about all Pokemon in the Pokémon universe, as well as search for Pokémon by name. 
 This project was created using HTML, CSS, and JavaScript.
