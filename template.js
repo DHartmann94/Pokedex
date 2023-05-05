@@ -61,7 +61,7 @@ function pokemonPopupTemplate(pokemon) {
 
     return /*html*/`
     <div class="popup-pokemon" id="popup-content" onclick="closePopup()">
-        <img class="close-img" src="img/cancel-256.jpg" alt="Close Popup">
+        <img class="close-img" src="img/close.png" alt="Close Popup">
         <div class="pokemon-popup-card" onclick="doNotClose(event)">
             <div class="popup-pokemon-top-container ${typeAndColor}">
                 <div>
