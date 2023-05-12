@@ -112,6 +112,7 @@ h3 {
     height: 150px;
     margin: 16px;
     padding: 16px;
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -120,7 +121,37 @@ h3 {
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.144);
     transition: 225ms ease-in-out;
     transform: scale(0.98);
+    overflow: hidden;
 }
+
+.pokemon-card::before {
+    content: "";
+    position: absolute;
+    top: -25px;
+    left: -25px;
+    right: -25px;
+    bottom: -25px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.8);
+    transition: box-shadow 0.3s ease-in-out;
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .pokemon-card:hover::before {
+    animation: borderGlow 1.5s infinite;
+    opacity: 1;
+  }
+
+  @keyframes borderGlow {
+    0% {
+      box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.8);
+    }
+    100% {
+      box-shadow: 0px 0px 0px 25px rgba(255, 255, 255, 0);
+    }
+  }
+  
 
 .pokemon-card:hover {
     box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.144);
