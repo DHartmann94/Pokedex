@@ -16,6 +16,9 @@ function init() {
 }
 
 /* --- API --- */
+/**
+ * Loads the pokemon data from the API.
+ */
 function getUrl(position) {
     return `https://pokeapi.co/api/v2/pokemon/${position}/`;
 }
@@ -41,6 +44,11 @@ async function loadPokemonFromApi(position) {
     return responseAsJsonPokemon;
 }
 /* --- General --- */
+/**
+ * Assigns type colors and displays types for a given Pokémon.
+ * @param {Object} pokemon - The Pokémon object containing type information.
+ * @param {string} idPrefix - The prefix used to identify the HTML element where type information will be displayed.
+ */
 function typecolorAndType(pokemon, idPrefix) {
     let type = pokemon['types'];
     let pokemonId = pokemon['id'];
@@ -80,6 +88,10 @@ function startSearch() {
     searchResults(results);
 }
 
+/**
+ * Displays the search results.
+ * @param {Array} results - An array of Pokémon objects matching the search criteria.
+ */
 async function searchResults(results) {
     if (results.length > 0) {
         await generatePokemonCardFromSearch(results);
@@ -91,6 +103,10 @@ async function searchResults(results) {
     requestInProgress = false; // prevent faulty loading by input
 }
 
+/**
+ * Generates a Pokémon card for each search result.
+ * @param {Array} results - An array of Pokémon objects.
+ */
 async function generatePokemonCardFromSearch(results) {
     for (let i = 0; i < results.length; i++) {
         let pokemonName = results[i]['name'];
@@ -105,6 +121,10 @@ function showSearch(pokemon) {
     typecolorAndType(pokemon, 'type-search');
 }
 
+/**
+ * Shows either the search results or the Pokédex.
+ * @param {string} searchInput - The user's search input.
+ */
 function showSearchOrPokedex(searchInput) {
     if (searchInput <= '') {
         loadingPokemon = false;
@@ -126,6 +146,10 @@ function hideLoaderSearch() {
 }
 
 /* --- Pokemon Card --- */
+/**
+ * Generates a Pokémon card and displays it in the Pokédex.
+ * @param {Object} pokemon - The Pokémon object to generate the card for.
+ */
 function generatePokemonCard(pokemon) {
     document.getElementById('pokedex').innerHTML += pokemonCardTemplate(pokemon);
 
@@ -133,6 +157,11 @@ function generatePokemonCard(pokemon) {
 }
 
 /* --- Pokemon Popup --- */
+/**
+ * Displays a popup with detailed information about a Pokémon.
+ * @param {number} pokemonId - The ID of the Pokémon.
+ * @param {boolean} [nextAndPrevious=true] - Optional. Indicates whether to display next and previous buttons in the popup.
+ */
 async function popupPokemon(pokemonId, nextAndPrevious = true) {
     document.getElementById('body').classList.add('overflow-hidden');
 
@@ -147,6 +176,10 @@ async function popupPokemon(pokemonId, nextAndPrevious = true) {
     }
 }
 
+/**
+ * Displays the base stats section in the Pokémon popup.
+ * @param {Object} pokemon - The Pokémon object.
+ */
 function baseStatsPopup(pokemon) {
     let pokemonId = pokemon['id'];
     for (let i = 0; i < baseStats.length; i++) {
@@ -155,6 +188,11 @@ function baseStatsPopup(pokemon) {
     }
 }
 
+/**
+ * Calculates and sets the width of the base stat bar in the Pokémon popup.
+ * @param {number} i - The index of the base stat.
+ * @param {Object} pokemon - The Pokémon object.
+ */
 function calcBaseStatBar(i, pokemon) {
     let percent = +(pokemon['stats'][i]['base_stat'] / maxStats[i]) * 100;
     document.getElementById(`calculated-stat${i}`).style.setProperty('--progress-percent', `${percent}%`);
